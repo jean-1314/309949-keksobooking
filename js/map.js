@@ -5,20 +5,16 @@ var TITLES = ['Большая уютная квартира', 'Маленька�
 var TYPES = ['flat', 'house', 'bungalo'];
 var CHECKINOUT_TIME = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-var PIN_RANGE = [300, 900, 100, 500]; //[xMin, xMax, yMin, yMax]
-var PIN_SIZE = [56, 75]; //width = 56px; height = 75px;
+var PIN_RANGE = [300, 900, 100, 500]; // [xMin, xMax, yMin, yMax]
+var PIN_SIZE = [40, 40]; // width = 40px; height = 40px;
 
 function getAvatar() {
-  var randAvatarNum = Math.floor(Math.random() * ADS_NUMBER);
-  return 'img/avatars/user{{0' + randAvatarNum.toString() + '}}.png';
+  var randAvatarNum = Math.floor(Math.random() * ADS_NUMBER + 1);
+  return 'img/avatars/user0' + randAvatarNum.toString() + '.png';
 }
 
 function getTitle() {
   return TITLES[Math.floor(Math.random() * TITLES.length)];
-}
-
-function getAddress() {
-  return '{{' + locationX + '}}, {{' + locationY + '}}';
 }
 
 function getPrice() {
@@ -46,43 +42,71 @@ function getFeatures() {
   return FEATURES;
 }
 
-function getLocationX() {
-  var pinX = PIN_SIZE[0] / 2;
-  var locationX = Math.floor(Math.random() * (PIN_RANGE[1] - PIN_RANGE[0] - pinX) + PIN_RANGE[0]) + pinX;
-  return locationX;
-}
-
-function getLocationY() {
-  var pinY = PIN_SIZE[1] / 2;
-  var locationY = Math.floor(Math.random() * (PIN_RANGE[3] - PIN_RANGE[2] - pinY) + PIN_RANGE[2]) + Math.floor(pinY);
-  return locationY;
-}
-
 function createRentAd() {
-  return {
-    "author": {
-      "avatar": getAvatar()
-    },
+  var locationX = getLocationX();
+  var locationY = getLocationY();
+  var avatar = getAvatar();
 
-    "offer": {
-      "title": getTitle(),
-      "address": getAddress(),
-      "price": getPrice(),
-      "type": getType(),
-      "rooms": getRooms(),
-      "guests": getGuests(),
-      "checkin": getCheckInOut(),
-      "checkout": getCheckInOut(),
-      "features": getFeatures(),
-      "description": '',
-      "photos": []
-    },
-
-    "location": {
-      "x": getLocationX(),
-      "y": getLocationY()
-    }
+  function getLocationX() {
+    var pinX = PIN_SIZE[0] / 2;
+    return Math.floor(Math.random() * (PIN_RANGE[1] - PIN_RANGE[0] - pinX) + PIN_RANGE[0]) + pinX;
   }
+
+  function getLocationY() {
+    var pinY = PIN_SIZE[1] / 2;
+    return Math.floor(Math.random() * (PIN_RANGE[3] - PIN_RANGE[2] - pinY) + PIN_RANGE[2]) + pinY;
+  }
+
+  function getAddress() {
+    return '' + locationX + ', ' + locationY + '';
+  }
+
+  function createPin() {
+    var pinMap = document.querySelector('.tokyo__pin-map');
+    var fragment = document.createDocumentFragment();
+
+    var pin = document.createElement('div');
+    pin.className = 'pin';
+    pin.style = 'left:' + locationX + 'px; top: ' + locationY + 'px';
+    pin.innerHTML = '<img src=' + avatar + ' class="rounded" width="40" height="40">';
+    fragment.appendChild(pin);
+    pinMap.appendChild(fragment);
+  }
+  createPin();
+
+  function createPanel() {
+    var dialogPanel = document.querySelector('.dialog__panel');
+    var template = document.querySelector('#lodge-template');
+    var lodgeElement = template.content.cloneNode(true);
+    lodgeElement.children.textContent = getTitle();
+    dialogPanel.appendChild(lodgeElement);
+  }
+  createPanel();
+
+  return {
+    'author': {
+      'avatar': getAvatar()
+    },
+
+    'offer': {
+      'title': getTitle(),
+      'address': getAddress(),
+      'price': getPrice(),
+      'type': getType(),
+      'rooms': getRooms(),
+      'guests': getGuests(),
+      'checkin': getCheckInOut(),
+      'checkout': getCheckInOut(),
+      'features': getFeatures(),
+      'description': '',
+      'photos': []
+    },
+
+    'location': {
+      'x': locationX,
+      'y': locationY
+    }
+  };
 }
 
 function createAds(adsNumber) {
@@ -94,4 +118,5 @@ function createAds(adsNumber) {
 
   return rentAds;
 }
-console.log(createAds(8));
+
+createAds(8);
