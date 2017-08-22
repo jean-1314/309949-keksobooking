@@ -42,55 +42,29 @@ function getFeatures() {
   return FEATURES;
 }
 
-function createRentAd() {
+function getLocationX() {
+  var pinX = PIN_SIZE[0] / 2;
+  return Math.floor(Math.random() * (PIN_RANGE[1] - PIN_RANGE[0] - pinX) + PIN_RANGE[0]) + pinX;
+}
+
+function getLocationY() {
+  var pinY = PIN_SIZE[1] / 2;
+  return Math.floor(Math.random() * (PIN_RANGE[3] - PIN_RANGE[2] - pinY) + PIN_RANGE[2]) + pinY;
+}
+
+function getRentAd() {
   var locationX = getLocationX();
   var locationY = getLocationY();
   var avatar = getAvatar();
 
-  function getLocationX() {
-    var pinX = PIN_SIZE[0] / 2;
-    return Math.floor(Math.random() * (PIN_RANGE[1] - PIN_RANGE[0] - pinX) + PIN_RANGE[0]) + pinX;
-  }
-
-  function getLocationY() {
-    var pinY = PIN_SIZE[1] / 2;
-    return Math.floor(Math.random() * (PIN_RANGE[3] - PIN_RANGE[2] - pinY) + PIN_RANGE[2]) + pinY;
-  }
-
-  function getAddress() {
-    return '' + locationX + ', ' + locationY + '';
-  }
-
-  function createPin() {
-    var pinMap = document.querySelector('.tokyo__pin-map');
-    var fragment = document.createDocumentFragment();
-
-    var pin = document.createElement('div');
-    pin.className = 'pin';
-    pin.style = 'left:' + locationX + 'px; top: ' + locationY + 'px';
-    pin.innerHTML = '<img src=' + avatar + ' class="rounded" width="40" height="40">';
-    fragment.appendChild(pin);
-    pinMap.appendChild(fragment);
-  }
-  createPin();
-
-  function createPanel() {
-    var dialogPanel = document.querySelector('.dialog__panel');
-    var template = document.querySelector('#lodge-template');
-    var lodgeElement = template.content.cloneNode(true);
-    lodgeElement.children.textContent = getTitle();
-    dialogPanel.appendChild(lodgeElement);
-  }
-  createPanel();
-
   return {
     'author': {
-      'avatar': getAvatar()
+      'avatar': avatar
     },
 
     'offer': {
       'title': getTitle(),
-      'address': getAddress(),
+      'address': '' + locationX + ', ' + locationY + '',
       'price': getPrice(),
       'type': getType(),
       'rooms': getRooms(),
@@ -109,14 +83,33 @@ function createRentAd() {
   };
 }
 
-function createAds(adsNumber) {
-  var rentAds = [];
+function createPin() {
+  var pinMap = document.querySelector('.tokyo__pin-map');
+  var fragment = document.createDocumentFragment();
+  var pin = document.createElement('div');
 
-  for (var i = 0; i < adsNumber; i++) {
-    rentAds[i] = createRentAd();
-  }
+  pin.className = 'pin';
+  pin.style = 'left:' + getRentAd().location.x + 'px; top: ' + getRentAd().location.y + 'px';
+  pin.innerHTML = '<img src=' + getRentAd().author.avatar + ' class="rounded" width="40" height="40">';
 
-  return rentAds;
+  fragment.appendChild(pin);
+  pinMap.appendChild(fragment);
 }
 
-createAds(8);
+function createPanel() {
+  var dialog = document.querySelector('.dialog');
+  var template = document.querySelector('#lodge-template');
+  var lodgeElement = template.content.cloneNode(true);
+
+  lodgeElement.children[0].textContent = getRentAd().offer.title;
+  dialog.appendChild(lodgeElement);
+}
+
+function init(adsNumber) {
+  for (var i = 0; i < adsNumber; i++) {
+    getRentAd();
+    createPin();
+    createPanel();
+  }
+}
+init(ADS_NUMBER);
