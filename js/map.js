@@ -7,10 +7,11 @@ var CHECKINOUT_TIME = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var PIN_RANGE = [300, 900, 100, 500]; // [xMin, xMax, yMin, yMax]
 var PIN_SIZE = [40, 40]; // width = 40px; height = 40px;
+var items = [];
 
 function getAvatar() {
   var randAvatarNum = Math.floor(Math.random() * ADS_NUMBER + 1);
-  return 'img/avatars/user0' + randAvatarNum.toString() + '.png';
+  return 'img/avatars/user0' + randAvatarNum + '.png';
 }
 
 function getTitle() {
@@ -83,33 +84,33 @@ function getRentAd() {
   };
 }
 
-function createPin() {
+function createPin(data) {
   var pinMap = document.querySelector('.tokyo__pin-map');
   var fragment = document.createDocumentFragment();
   var pin = document.createElement('div');
 
   pin.className = 'pin';
-  pin.style = 'left:' + getRentAd().location.x + 'px; top: ' + getRentAd().location.y + 'px';
-  pin.innerHTML = '<img src=' + getRentAd().author.avatar + ' class="rounded" width="40" height="40">';
+  pin.style = 'left:' + data.location.x + 'px; top: ' + data.location.y + 'px';
+  pin.innerHTML = '<img src=' + data.author.avatar + ' class="rounded" width="40" height="40">';
 
   fragment.appendChild(pin);
   pinMap.appendChild(fragment);
 }
 
-function createPanel() {
+function createPanel(data) {
   var dialog = document.querySelector('.dialog');
-  var template = document.querySelector('#lodge-template');
-  var lodgeElement = template.content.cloneNode(true);
-
-  lodgeElement.children[0].textContent = getRentAd().offer.title;
-  dialog.appendChild(lodgeElement);
+  var template = document.getElementById('lodge-template');
+  // var lodgeElement = template.content.cloneNode(true);
+console.log(template.content.querySelector('.lodge__title').);
+  // lodgeElement.children.querySelector('.lodge__title').textContent = data.offer.title;
+  //dialog.appendChild(lodgeElement);
 }
 
 function init(adsNumber) {
   for (var i = 0; i < adsNumber; i++) {
-    getRentAd();
-    createPin();
-    createPanel();
+    items.push(getRentAd());
   }
+  items.map(createPin);
+  createPanel(items[0]);
 }
 init(ADS_NUMBER);
