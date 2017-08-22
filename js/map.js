@@ -5,9 +5,11 @@ var TITLES = ['Большая уютная квартира', 'Маленька�
 var TYPES = ['flat', 'house', 'bungalo'];
 var CHECKINOUT_TIME = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+
 var PIN_RANGE = [300, 900, 100, 500]; // [xMin, xMax, yMin, yMax]
 var PIN_SIZE = [40, 40]; // width = 40px; height = 40px;
-var items = [];
+
+var adOptions = [];
 
 function getAvatar() {
   var randAvatarNum = Math.floor(Math.random() * ADS_NUMBER + 1);
@@ -98,19 +100,42 @@ function createPin(data) {
 }
 
 function createPanel(data) {
-  var dialog = document.querySelector('.dialog');
+  var dialog = document.getElementById('offer-dialog');
   var template = document.getElementById('lodge-template');
-  // var lodgeElement = template.content.cloneNode(true);
-console.log(template.content.querySelector('.lodge__title').);
-  // lodgeElement.children.querySelector('.lodge__title').textContent = data.offer.title;
-  //dialog.appendChild(lodgeElement);
+  var oldDialog = document.querySelector('dialog__panel');
+
+  template.content.querySelector('.lodge__title').textContent = data.offer.title;
+  template.content.querySelector('.lodge__address').textContent = data.offer.address;
+  template.content.querySelector('.lodge__price').textContent = data.offer.price + '\&#x20bd;/ночь';
+
+  if (data.offer.type === 'flat') {
+    template.content.querySelector('.lodge__type').textContent = 'Квартира';
+  } else if (data.offer.type === 'house') {
+    template.content.querySelector('.lodge__type').textContent = 'Дом';
+  } else if (data.offer.type === 'bungalo') {
+    template.content.querySelector('.lodge__type').textContent = 'Бунгало';
+  } else {
+    template.content.querySelector('.lodge__type').textContent = 'Неопознанный тип жилья';
+  }
+
+  template.content.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + data.offer.guests + ' гостей в ' + data.offer.rooms + ' комнатах';
+  template.content.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + data.offer.checkin + ' выезд до ' + data.offer.checkout + '';
+
+  for (var i = 0; i < data.offer.features.length; i++) {
+    template.content.querySelector('.lodge__features').innerHTML = '<span class="feature__image feature__image--' + [i] + '"></span>';
+  }
+
+  template.content.querySelector('.lodge__description').textContent = data.offer.description;
+
+  oldDialog = dialog.replaceChild(template.content, dialog.children[1]);
 }
 
 function init(adsNumber) {
   for (var i = 0; i < adsNumber; i++) {
-    items.push(getRentAd());
+    adOptions.push(getRentAd());
   }
-  items.map(createPin);
-  createPanel(items[0]);
+  adOptions.map(createPin);
+  createPanel(adOptions[0]);
 }
+
 init(ADS_NUMBER);
