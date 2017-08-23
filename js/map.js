@@ -106,7 +106,9 @@ function createPanel(data) {
 
   template.content.querySelector('.lodge__title').textContent = data.offer.title;
   template.content.querySelector('.lodge__address').textContent = data.offer.address;
-  template.content.querySelector('.lodge__price').textContent = data.offer.price + '\&#x20bd;/ночь';
+  template.content.querySelector('.lodge__price').textContent = data.offer.price + ' &#x20bd; /ночь';
+
+  dialog.querySelector('.dialog__title').firstChild.setAttribute('src', data.author.avatar);
 
   if (data.offer.type === 'flat') {
     template.content.querySelector('.lodge__type').textContent = 'Квартира';
