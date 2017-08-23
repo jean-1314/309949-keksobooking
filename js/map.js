@@ -127,8 +127,9 @@ function createPanel(data) {
   template.content.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + data.offer.guests + ' гостей в ' + data.offer.rooms + ' комнатах';
   template.content.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + data.offer.checkin + ' выезд до ' + data.offer.checkout + '';
 
+  var lodgeFeatures = template.content.querySelector('.lodge__features');
   for (var i = 0; i < data.offer.features.length; i++) {
-    template.content.querySelector('.lodge__features').innerHTML += '<span class="feature__image feature__image--' + [i] + '"></span>';
+    lodgeFeatures.innerHTML += '<span class="feature__image feature__image--' + [i] + '"></span>';
   }
 
   template.content.querySelector('.lodge__description').textContent = data.offer.description;
