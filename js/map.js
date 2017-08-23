@@ -11,6 +11,11 @@ var PIN_SIZE = [40, 40]; // width = 40px; height = 40px;
 
 var adOptions = [];
 
+function generateRandomNumber(min, max) {
+  var multiplier = max + 1 - min;
+  return Math.floor(min + Math.random() * multiplier);
+}
+
 function getAvatar() {
   var randAvatarNum = Math.floor(Math.random() * ADS_NUMBER + 1);
   return 'img/avatars/user0' + randAvatarNum + '.png';
@@ -21,7 +26,9 @@ function getTitle() {
 }
 
 function getPrice() {
-  return Math.floor(Math.random() * 1000000) + 1000;
+  var minPrice = 1000;
+  var maxPrice = 1000000;
+  return generateRandomNumber(minPrice, maxPrice);
 }
 
 function getType() {
@@ -29,11 +36,15 @@ function getType() {
 }
 
 function getRooms() {
-  return Math.floor(Math.random() * 5) + 1;
+  var minRooms = 1;
+  var maxRooms = 5;
+  return generateRandomNumber(minRooms, maxRooms);
 }
 
 function getGuests() {
-  return Math.floor(Math.random() * 10) + 1;
+  var minGuests = 1;
+  var maxGuests = 10;
+  return generateRandomNumber(minGuests, maxGuests);
 }
 
 function getCheckInOut() {
@@ -41,8 +52,8 @@ function getCheckInOut() {
 }
 
 function getFeatures() {
-  FEATURES.length = Math.floor(Math.random() * 6);
-  return FEATURES;
+  var randFeaturesNumber = generateRandomNumber(0, FEATURES.length);
+  return FEATURES.slice(0, randFeaturesNumber);
 }
 
 function getLocationX() {
@@ -58,11 +69,10 @@ function getLocationY() {
 function getRentAd() {
   var locationX = getLocationX();
   var locationY = getLocationY();
-  var avatar = getAvatar();
 
   return {
     'author': {
-      'avatar': avatar
+      'avatar': getAvatar()
     },
 
     'offer': {
@@ -102,7 +112,6 @@ function createPin(data) {
 function createPanel(data) {
   var dialog = document.getElementById('offer-dialog');
   var template = document.getElementById('lodge-template');
-  var oldDialog = document.querySelector('dialog__panel');
 
   template.content.querySelector('.lodge__title').textContent = data.offer.title;
   template.content.querySelector('.lodge__address').textContent = data.offer.address;
@@ -129,12 +138,12 @@ function createPanel(data) {
 
   var lodgeFeatures = template.content.querySelector('.lodge__features');
   for (var i = 0; i < data.offer.features.length; i++) {
-    lodgeFeatures.innerHTML += '<span class="feature__image feature__image--' + [i] + '"></span>';
+    lodgeFeatures.innerHTML += '<span class="feature__image feature__image--' + data.offer.features[i] + '"></span>';
   }
 
   template.content.querySelector('.lodge__description').textContent = data.offer.description;
 
-  oldDialog = dialog.replaceChild(template.content, dialog.children[1]);
+  dialog.replaceChild(template.content, dialog.children[1]);
 }
 
 function init(adsNumber) {
