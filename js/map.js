@@ -93,7 +93,7 @@ function createPin(data) {
 
   pin.className = 'pin';
   pin.style = 'left:' + data.location.x + 'px; top: ' + data.location.y + 'px';
-  pin.innerHTML = '<img src=' + data.author.avatar + ' class="rounded" width="40" height="40">';
+  pin.innerHTML = '<img src="' + data.author.avatar + '" class="rounded" width="40" height="40">';
 
   fragment.appendChild(pin);
   pinMap.appendChild(fragment);
