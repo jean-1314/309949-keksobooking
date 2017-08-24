@@ -28,9 +28,8 @@ function shuffle(a) {
   }
 }
 
-function getAvatar() {
-  var randAvatarNum = Math.floor(Math.random() * ADS_NUMBER + 1);
-  return 'img/avatars/user0' + randAvatarNum + '.png';
+function getAvatar(nameSuffix) {
+  return 'img/avatars/user0' + nameSuffix + '.png';
 }
 
 function getTitle() {
@@ -79,13 +78,13 @@ function getLocationY() {
   return Math.floor(Math.random() * (PIN_RANGE[3] - PIN_RANGE[2] - pinY) + PIN_RANGE[2]) + pinY;
 }
 
-function getRentAd() {
+function getRentAd(params = {number: 0}) {
   var locationX = getLocationX();
   var locationY = getLocationY();
 
   return {
     'author': {
-      'avatar': getAvatar()
+      'avatar': getAvatar(params.number)
     },
 
     'offer': {
@@ -130,7 +129,9 @@ function createPanel(data) {
   template.content.querySelector('.lodge__address').textContent = data.offer.address;
   template.content.querySelector('.lodge__price').innerHTML = data.offer.price + ' &#x20bd;/ночь';
 
+
   dialog.querySelector('.dialog__title').firstChild.setAttribute('src', data.author.avatar);
+
 
   switch (data.offer.type) {
     case 'flat': template.content.querySelector('.lodge__type').textContent = 'Квартира';
@@ -161,9 +162,9 @@ function createPanel(data) {
 
 function init(adsNumber) {
   for (var i = 0; i < adsNumber; i++) {
-    adOptions.push(getRentAd());
+    adOptions.push(getRentAd({number: i + 1}));
   }
-  adOptions.map(createPin);
+  adOptions.forEach(createPin);
   createPanel(adOptions[0]);
 }
 
