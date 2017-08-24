@@ -16,6 +16,18 @@ function generateRandomNumber(min, max) {
   return Math.floor(min + Math.random() * multiplier);
 }
 
+function shuffle(a) {
+  var j;
+  var x;
+  var i;
+  for (i = a.length; i; i--) {
+    j = Math.floor(Math.random() * i);
+    x = a[i - 1];
+    a[i - 1] = a[j];
+    a[j] = x;
+  }
+}
+
 function getAvatar() {
   var randAvatarNum = Math.floor(Math.random() * ADS_NUMBER + 1);
   return 'img/avatars/user0' + randAvatarNum + '.png';
@@ -53,6 +65,7 @@ function getCheckInOut() {
 
 function getFeatures() {
   var randFeaturesNumber = generateRandomNumber(0, FEATURES.length);
+  shuffle(FEATURES);
   return FEATURES.slice(0, randFeaturesNumber);
 }
 
