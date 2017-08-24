@@ -165,7 +165,8 @@ function init(adsNumber) {
     adOptions.push(getRentAd({number: i + 1}));
   }
   adOptions.forEach(createPin);
-  createPanel(adOptions[0]);
+
+  createPanel(adOptions[generateRandomNumber(1, adOptions.length)]);
 }
 
 init(ADS_NUMBER);
