@@ -175,15 +175,17 @@ var pinList = document.querySelectorAll('.pin');
 var pinArray = Array.prototype.slice.call(pinList);
 var dialogOff = document.querySelector('.dialog__close');
 
-function activatePin() {
+function activatePin(pin) {
+  Array.prototype.forEach.call(document.querySelectorAll('.pin'), function(item) { if(item.classList.contains('pin--active')) item.classList.remove('pin--active') });
   pin.classList.add('pin--active');
 }
 
-function deactivatePin() {
+function deactivatePin(pin) {
   pin.classList.remove('pin--active');
 }
 
-function openDialog() {
+function openDialog(pinData) {
+  console.log(pinData); // TODO теперь здесь передаются нужные данные, можно наполнять окно контентом!
   dialog.style.display = 'block';
 }
 
@@ -194,44 +196,39 @@ function closeDialog() {
 document.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
     closeDialog();
-    deactivatePin();
+    deactivatePin(evt.target);
   }
 });
 
 for (var i = 0; i < pinArray.length; i++) {
   var pin = pinArray[i];
 
-  pin.addEventListener('click', function () {
-    if (pin.classList.contains('pin--active')) {
-      deactivatePin();
+  pin.addEventListener('click', function (relatedPinData) {
+    if (this.classList.contains('pin--active')) {
+      deactivatePin(this);
       closeDialog();
     } else {
-      activatePin();
-      openDialog();
+      activatePin(this);
+      openDialog(relatedPinData);
     }
-  });
+  }.bind(pin, adItems[i]));
 
-  pin.addEventListener('keydown', function (evt) {
+  pin.addEventListener('keydown', function (relatedPinData, evt) {
     if (evt.keyCode === ENTER_KEYCODE) {
-      if (!pin.classList.contains('pin--active')) {
-        activatePin();
-        openDialog();
-      } else {
-        deactivatePin();
-        closeDialog();
-      }
+      activatePin(this);
+      openDialog(relatedPinData);
     }
-  });
+  }.bind(pin, adItems[i]));
 
   dialogOff.addEventListener('click', function () {
     closeDialog();
-    deactivatePin();
-  });
+    deactivatePin(this);
+  }.bind(pin));
 
   dialogOff.addEventListener('keydown', function (evt) {
     if (evt.keyCode === ENTER_KEYCODE) {
       closeDialog();
-      deactivatePin();
+      deactivatePin(this);
     }
-  });
+  }.bind(pin));
 }
