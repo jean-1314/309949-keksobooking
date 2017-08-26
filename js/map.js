@@ -9,7 +9,12 @@ var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditio
 var PIN_RANGE = [300, 900, 100, 500]; // [xMin, xMax, yMin, yMax]
 var PIN_SIZE = [40, 40]; // width = 40px; height = 40px;
 
-var adOptions = [];
+var ENTER_KEYCODE = 13;
+var ESC_KEYCODE = 27;
+
+var adItems = [];
+var dialog = document.getElementById('offer-dialog');
+closeDialog();
 
 function generateRandomNumber(min, max) {
   var multiplier = max + 1 - min;
@@ -115,23 +120,18 @@ function createPin(data) {
 
   pin.className = 'pin';
   pin.style = 'left:' + data.location.x + 'px; top: ' + data.location.y + 'px';
-  pin.innerHTML = '<img src="' + data.author.avatar + '" class="rounded" width="40" height="40">';
-
+  pin.innerHTML = '<img src="' + data.author.avatar + '" class="rounded" width="40" height="40" tabindex="0">';
+  dialog.querySelector('.dialog__title').firstChild.setAttribute('src', data.author.avatar);
   fragment.appendChild(pin);
   pinMap.appendChild(fragment);
 }
 
-function createPanel(data) {
-  var dialog = document.getElementById('offer-dialog');
+function createDialog(data) {
   var template = document.getElementById('lodge-template');
 
   template.content.querySelector('.lodge__title').textContent = data.offer.title;
   template.content.querySelector('.lodge__address').textContent = data.offer.address;
   template.content.querySelector('.lodge__price').innerHTML = data.offer.price + ' &#x20bd;/ночь';
-
-
-  dialog.querySelector('.dialog__title').firstChild.setAttribute('src', data.author.avatar);
-
 
   switch (data.offer.type) {
     case 'flat': template.content.querySelector('.lodge__type').textContent = 'Квартира';
@@ -162,11 +162,71 @@ function createPanel(data) {
 
 function init(adsNumber) {
   for (var i = 0; i < adsNumber; i++) {
-    adOptions.push(getRentAd({number: i + 1}));
+    adItems.push(getRentAd({number: i + 1}));
   }
-  adOptions.forEach(createPin);
+  adItems.forEach(createPin);
 
-  createPanel(adOptions[generateRandomNumber(1, adOptions.length)]);
+  createDialog(adItems[generateRandomNumber(1, adItems.length)]);
 }
 
 init(ADS_NUMBER);
+
+var pinList = document.querySelectorAll('.pin');
+var pinArray = Array.prototype.slice.call(pinList);
+var dialogOff = document.querySelector('.dialog__close');
+
+function activatePin() {
+  pin.classList.add('pin--active');
+}
+
+function deactivatePin() {
+  pin.classList.remove('pin--active');
+}
+
+function openDialog() {
+  dialog.style.display = 'block';
+}
+
+function closeDialog() {
+  dialog.style.display = 'none';
+}
+
+document.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    closeDialog();
+    deactivatePin();
+  }
+});
+
+for (var i = 0; i < pinArray.length; i++) {
+  var pin = pinArray[i];
+
+  pin.addEventListener('click', function () {
+    if (pin.classList.contains('pin--active')) {
+      deactivatePin();
+      closeDialog();
+    } else {
+      activatePin();
+      openDialog();
+    }
+  });
+
+  pin.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      activatePin();
+      openDialog();
+    }
+  });
+
+  dialogOff.addEventListener('click', function () {
+    closeDialog();
+    deactivatePin();
+  });
+
+  dialogOff.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      closeDialog();
+      deactivatePin();
+    }
+  });
+}
