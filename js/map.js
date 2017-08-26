@@ -213,8 +213,13 @@ for (var i = 0; i < pinArray.length; i++) {
 
   pin.addEventListener('keydown', function (evt) {
     if (evt.keyCode === ENTER_KEYCODE) {
-      activatePin();
-      openDialog();
+      if (!pin.classList.contains('pin--active')) {
+        activatePin();
+        openDialog();
+      } else {
+        deactivatePin();
+        closeDialog();
+      }
     }
   });
 
