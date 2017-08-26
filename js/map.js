@@ -166,7 +166,7 @@ function init(adsNumber) {
   }
   adItems.forEach(createPin);
 
-  createDialog(adItems[generateRandomNumber(1, adItems.length)]);
+  createDialog(adItems[adItems.length - 1]);
 }
 
 init(ADS_NUMBER);
