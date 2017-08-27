@@ -187,6 +187,7 @@ function deactivatePin(pin) {
 function openDialog(pinData) {
   console.log(pinData); // TODO теперь здесь передаются нужные данные, можно наполнять окно контентом!
   dialog.style.display = 'block';
+  createDialog(pinData);
 }
 
 function closeDialog() {
