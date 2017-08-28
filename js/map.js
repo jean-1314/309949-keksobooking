@@ -68,7 +68,7 @@ function getCheckInOut() {
 }
 
 function getFeatures() {
-  var randFeaturesNumber = generateRandomNumber(0, FEATURES.length);
+  var randFeaturesNumber = generateRandomNumber(0, FEATURES.length - 1);
   shuffle(FEATURES);
   return FEATURES.slice(0, randFeaturesNumber);
 }
@@ -123,11 +123,44 @@ function createPin(data) {
   pin.innerHTML = '<img src="' + data.author.avatar + '" class="rounded" width="40" height="40" tabindex="0">';
   dialog.querySelector('.dialog__title').firstChild.setAttribute('src', data.author.avatar);
   fragment.appendChild(pin);
+
   pinMap.appendChild(fragment);
+  addPinHandlers(pin, data);
+}
+
+function addPinHandlers(pin, data) {
+  pin.addEventListener('click', function (relatedPinData) {
+    if (this.classList.contains('pin--active')) {
+      deactivatePin(this);
+      closeDialog();
+    } else {
+      activatePin(this);
+      openDialog(relatedPinData);
+    }
+  }.bind(pin, data));
+
+  pin.addEventListener('keydown', function (relatedPinData, evt) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      activatePin(this);
+      openDialog(relatedPinData);
+    }
+  }.bind(pin, data));
+
+  dialogOff.addEventListener('click', function () {
+    closeDialog();
+    deactivatePin(this);
+  }.bind(pin));
+
+  dialogOff.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      closeDialog();
+      deactivatePin(this);
+    }
+  }.bind(pin));
 }
 
 function createDialog(data) {
-  var template = document.getElementById('lodge-template');
+  var template = document.getElementById('lodge-template').cloneNode(true);
 
   template.content.querySelector('.lodge__title').textContent = data.offer.title;
   template.content.querySelector('.lodge__address').textContent = data.offer.address;
@@ -157,26 +190,19 @@ function createDialog(data) {
 
   template.content.querySelector('.lodge__description').textContent = data.offer.description;
 
+  dialog.querySelector('.dialog__title img').src = data.author.avatar;
+
   dialog.replaceChild(template.content, dialog.children[1]);
 }
 
-function init(adsNumber) {
-  for (var i = 0; i < adsNumber; i++) {
-    adItems.push(getRentAd({number: i + 1}));
-  }
-  adItems.forEach(createPin);
-
-  createDialog(adItems[adItems.length - 1]);
-}
-
-init(ADS_NUMBER);
-
-var pinList = document.querySelectorAll('.pin');
-var pinArray = Array.prototype.slice.call(pinList);
 var dialogOff = document.querySelector('.dialog__close');
 
 function activatePin(pin) {
-  Array.prototype.forEach.call(document.querySelectorAll('.pin'), function(item) { if(item.classList.contains('pin--active')) item.classList.remove('pin--active') });
+  Array.prototype.forEach.call(document.querySelectorAll('.pin'), function (item) {
+    if (item.classList.contains('pin--active')) {
+      item.classList.remove('pin--active');
+    }
+  });
   pin.classList.add('pin--active');
 }
 
@@ -185,7 +211,6 @@ function deactivatePin(pin) {
 }
 
 function openDialog(pinData) {
-  console.log(pinData); // TODO теперь здесь передаются нужные данные, можно наполнять окно контентом!
   dialog.style.display = 'block';
   createDialog(pinData);
 }
@@ -194,42 +219,19 @@ function closeDialog() {
   dialog.style.display = 'none';
 }
 
-document.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === ESC_KEYCODE) {
-    closeDialog();
-    deactivatePin(evt.target);
+function init(adsNumber) {
+  for (var i = 0; i < adsNumber; i++) {
+    adItems.push(getRentAd({number: i + 1}));
   }
-});
 
-for (var i = 0; i < pinArray.length; i++) {
-  var pin = pinArray[i];
+  adItems.forEach(createPin);
 
-  pin.addEventListener('click', function (relatedPinData) {
-    if (this.classList.contains('pin--active')) {
-      deactivatePin(this);
+  document.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ESC_KEYCODE) {
       closeDialog();
-    } else {
-      activatePin(this);
-      openDialog(relatedPinData);
+      deactivatePin(evt.target);
     }
-  }.bind(pin, adItems[i]));
-
-  pin.addEventListener('keydown', function (relatedPinData, evt) {
-    if (evt.keyCode === ENTER_KEYCODE) {
-      activatePin(this);
-      openDialog(relatedPinData);
-    }
-  }.bind(pin, adItems[i]));
-
-  dialogOff.addEventListener('click', function () {
-    closeDialog();
-    deactivatePin(this);
-  }.bind(pin));
-
-  dialogOff.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === ENTER_KEYCODE) {
-      closeDialog();
-      deactivatePin(this);
-    }
-  }.bind(pin));
+  });
 }
+
+init(ADS_NUMBER);
