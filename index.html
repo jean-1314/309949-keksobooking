@@ -116,13 +116,15 @@
     </div>
     <form class="notice__form"
           method="post"
+          action="https://1510.dump.academy/keksobooking"
           enctype="multipart/form-data"
-          autocomplete="off">
+          autocomplete="off"
+          name="notice">
       <div class="form__content">
         <div class="form__panel">
           <div class="form__element  form__element--wide">
             <label for="title">Заголовок объявления</label>
-            <input id="title" name="title" type="text" placeholder="Милая, уютная квартирка, например">
+            <input id="title" name="title" type="text" minlength="30" maxlength="100" placeholder="Милая, уютная квартирка, например" required>
           </div>
           <div class="form__row">
             <div class="form__element">
@@ -136,7 +138,7 @@
             </div>
             <div class="form__element">
               <label for="price">Цена за ночь, руб.</label>
-              <input id="price" name="price" type="number" placeholder="5000">
+              <input id="price" name="price" type="number" value="1000" placeholder="5000" min="0" max="1000000">
             </div>
           </div>
           <div class="form__row">
@@ -167,12 +169,12 @@
         <div class="form__panel">
           <div class="form__element  form__element--wide">
             <label for="address">Адрес</label>
-            <input id="address" name="address" type="text">
+            <input id="address" name="address" type="text" required>
           </div>
           <div class="form__row">
             <div class="form__element">
               <label for="timein">Время заезда и выезда</label>
-              <select id="timein" name="timein">
+              <select id="timein" name="timein" onchange="timeout.value=this.value;">
                 <option value="12:00" selected>После 12</option>
                 <option value="13:00">После 13</option>
                 <option value="14:00">После 14</option>
@@ -180,7 +182,7 @@
             </div>
             <div class="form__element">
               <label for="timeout">&nbsp;</label>
-              <select id="timeout" name="timeout" title="Time to go out">
+              <select id="timeout" name="timeout" title="Time to go out" onchange="timein.value=this.value;">
                 <option value="12:00" selected>Выезд до 12</option>
                 <option value="13:00">Выезд до 13</option>
                 <option value="14:00">Выезд до 14</option>
@@ -277,6 +279,7 @@
     </div>
   </div>
 </template>
+<script src="js/input.js"></script>
 <script src="js/map.js"></script>
 </body>
 </html>
