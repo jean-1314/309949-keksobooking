@@ -1,22 +1,5 @@
 'use strict';
 
-var ENTER_KEYCODE = 13;
-
-var LODGE_TYPES_PRICES = {
-  'bungalo': {min: 0, value: 0},
-  'flat': {min: 1000, value: 1000},
-  'house': {min: 5000, value: 5000},
-  'palace': {min: 10000, value: 10000}
-};
-
-var ROOMS_CAPACITY = {
-  '1': '1',
-  '2': '2',
-  '3': '3',
-  '100': '0',
-  '0': '100'
-};
-
 var noticeForm = document.forms.notice;
 
 var timeInInput = document.getElementById('timein');
