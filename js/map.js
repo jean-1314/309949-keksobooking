@@ -1,18 +1,24 @@
 'use strict';
+(function () {
+  function init(adsNumber) {
+    var adItems = [];
+    for (var i = 0; i < adsNumber; i++) {
+      adItems.push(window.data.getAd({number: i + 1}));
+    }
 
-function init(adsNumber) {
-  var adItems = [];
-  for (var i = 0; i < adsNumber; i++) {
-    adItems.push(getRentAd({number: i + 1}));
+    adItems.forEach(window.pin.getCreatePin);
   }
 
-  adItems.forEach(createPin);
-}
+  init(window.data.getAdsNumber);
 
-init(ADS_NUMBER);
+  function openDialog(pinData) {
+    window.data.getDialog.style.display = 'block';
+    window.card.getCreateDialog(pinData);
+  }
 
-function openDialog(pinData) {
-  dialog.style.display = 'block';
-  createDialog(pinData);
-}
-
+  window.map = {
+    getopenDialog: function () {
+      return openDialog();
+    }
+  };
+})();
