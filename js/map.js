@@ -6,7 +6,7 @@
       adItems.push(window.data.getAd({number: i + 1}));
     }
 
-    adItems.forEach(window.pin.getCreatePin());
+    adItems.forEach(window.pin.getCreatePin);
   }
 
   init(window.data.getAdsNumber());

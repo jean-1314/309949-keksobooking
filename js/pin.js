@@ -1,10 +1,9 @@
 'use strict';
 (function () {
-  function createPin() {
+  function createPin(data) {
     var pinMap = document.querySelector('.tokyo__pin-map');
     var fragment = document.createDocumentFragment();
     var pin = document.createElement('div');
-    var data = window.data.getAd();
 
     pin.className = 'pin';
     pin.style = 'left:' + data.location.x + 'px; top: ' + data.location.y + 'px';

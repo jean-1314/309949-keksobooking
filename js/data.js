@@ -98,6 +98,14 @@
     return Math.floor(Math.random() * (PIN_RANGE[3] - PIN_RANGE[2] - pinY) + PIN_RANGE[2]) + pinY;
   }
 
+  function getRentAds() {
+    var adItems = [];
+    for (var i = 0; i < ADS_NUMBER; i++) {
+      adItems.push(window.data.getAd({number: i + 1}));
+    }
+    return adItems;
+  }
+
   function getRentAd(params) {
     var locationX = getLocationX();
     var locationY = getLocationY();
