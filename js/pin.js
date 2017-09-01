@@ -1,14 +1,15 @@
 'use strict';
 (function () {
-  function createPin(data) {
+  function createPin() {
     var pinMap = document.querySelector('.tokyo__pin-map');
     var fragment = document.createDocumentFragment();
     var pin = document.createElement('div');
+    var data = window.data.getAd();
 
     pin.className = 'pin';
     pin.style = 'left:' + data.location.x + 'px; top: ' + data.location.y + 'px';
     pin.innerHTML = '<img src="' + data.author.avatar + '" class="rounded" width="40" height="40" tabindex="0">';
-    window.data.getDialog.querySelector('.dialog__title').firstChild.setAttribute('src', data.author.avatar);
+    window.data.getDialog().querySelector('.dialog__title').firstChild.setAttribute('src', data.author.avatar);
     fragment.appendChild(pin);
 
     pinMap.appendChild(fragment);
@@ -33,12 +34,12 @@
       }
     }.bind(pin, data));
 
-    window.data.getDialogOff.addEventListener('click', function () {
+    window.data.getDialogOff().addEventListener('click', function () {
       window.data.getCloseDialog();
       deactivatePin(this);
     }.bind(pin));
 
-    window.data.getDialogOff.addEventListener('keydown', function (evt) {
+    window.data.getDialogOff().addEventListener('keydown', function (evt) {
       if (evt.keyCode === window.data.enter) {
         window.data.getCloseDialog();
         deactivatePin(this);

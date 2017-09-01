@@ -3,7 +3,7 @@
   function init(adsNumber) {
     var adItems = [];
     for (var i = 0; i < adsNumber; i++) {
-      adItems.push(window.data.getAd(i + 1));
+      adItems.push(window.data.getAd({number: i + 1}));
     }
 
     adItems.forEach(window.pin.getCreatePin());

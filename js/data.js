@@ -98,13 +98,13 @@
     return Math.floor(Math.random() * (PIN_RANGE[3] - PIN_RANGE[2] - pinY) + PIN_RANGE[2]) + pinY;
   }
 
-  function getRentAd() {
+  function getRentAd(params) {
     var locationX = getLocationX();
     var locationY = getLocationY();
 
     return {
       'author': {
-        'avatar': getAvatar()
+        'avatar': getAvatar(params.number)
       },
 
       'offer': {
