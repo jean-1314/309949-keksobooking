@@ -16,7 +16,7 @@
   var submitBtn = document.querySelector('.form__submit');
 
   function getCapacity() {
-    return window.data.getRoomsCapacity();
+    return window.util.getRoomsCapacity;
   }
 
   function addInvalidBorder() {
@@ -36,8 +36,8 @@
   });
 
   typeInput.addEventListener('change', function () {
-    priceInput.min = window.data.getLodgeTypePrices()[typeInput.value].min || 0;
-    priceInput.value = window.data.getLodgeTypePrices()[typeInput.value].value || 0;
+    priceInput.min = window.util.getLodgeTypePrices[typeInput.value].min || 0;
+    priceInput.value = window.util.getLodgeTypePrices[typeInput.value].value || 0;
   });
 
   roomInput.addEventListener('change', function () {
