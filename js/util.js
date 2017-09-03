@@ -128,6 +128,14 @@
     };
   }
 
+  function getRentAds() {
+    var adItems = [];
+    for (var i = 0; i < ADS_NUMBER; i++) {
+      adItems.push(getRentAd({number: i + 1}));
+    }
+    return adItems;
+  }
+
   window.util = {
     getAdsNumber: ADS_NUMBER,
 
@@ -143,6 +151,6 @@
 
     getDialogOff: dialogOff,
 
-    getAd: getRentAd()
+    getRentAds: getRentAds()
   };
 })();

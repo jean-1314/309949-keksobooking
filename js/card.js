@@ -17,12 +17,12 @@
 
     template.content.querySelector('.lodge__description').textContent = data.offer.description;
 
-    window.data.getDialog.querySelector('.dialog__title img').src = data.author.avatar;
+    window.util.getDialog.querySelector('.dialog__title img').src = data.author.avatar;
 
-    window.data.getDialog.replaceChild(template.content, window.data.getDialog.children[1]);
+    window.util.getDialog.replaceChild(template.content, window.util.getDialog.children[1]);
   }
 
   window.card = {
-    getCreateDialog: createDialog()
+    getCreateDialog: createDialog
   };
 })();
