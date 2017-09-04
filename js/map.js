@@ -2,7 +2,7 @@
 (function () {
 
   function init() {
-    window.util.getRentAds.forEach(window.pin.getCreatePin);
+    window.data.getRentAds.forEach(window.pin.getCreatePin);
   }
 
   function openDialog(pinData) {
