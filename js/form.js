@@ -53,7 +53,7 @@
   });
 
   submitBtn.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === window.data.enter) {
+    if (evt.keyCode === window.util.enter) {
       addInvalidBorder();
     }
   });
