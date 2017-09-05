@@ -41,14 +41,25 @@
       };
 
       var onMouseUp = function (upEvt) {
+        var addressInput = document.getElementById('address');
         upEvt.preventDefault();
-
+        addressInput.value = 'x: ' + upEvt.clientX + ', y: ' + upEvt.clientY;
         document.removeEventListener('mousemove', onMouseMove);
         document.removeEventListener('mouseup', onMouseUp);
       };
 
+      var drag = function (dragEvt) {
+
+        dragEvt.preventDefault();
+        if (dragEvt.clientX <= window.util.pinRange[0]) {
+          document.removeEventListener('drag', drag);
+          dragEvt.clientX = window.util.pinRange[0];
+        }
+      };
+
       document.addEventListener('mousemove', onMouseMove);
       document.addEventListener('mouseup', onMouseUp);
+      document.addEventListener('dragover', drag);
     });
 
     var map = window.pin.pinMap;
