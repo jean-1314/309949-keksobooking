@@ -14,6 +14,7 @@
 
   (function () {
     var pinMain = document.querySelector('.pin__main');
+    var map = window.pin.pinMap;
 
     pinMain.addEventListener('mousedown', function (evt) {
       evt.preventDefault();
@@ -48,21 +49,19 @@
         document.removeEventListener('mouseup', onMouseUp);
       };
 
-      // var drag = function (dragEvt) {
+      var drag = function (dragEvt) {
 
-      //   dragEvt.preventDefault();
-      //   if (dragEvt.clientX <= window.util.pinRange[0]) {
-      //     document.removeEventListener('drag', drag);
-      //     dragEvt.clientX = window.util.pinRange[0];
-      //   }
-      // };
+        dragEvt.preventDefault();
+        if (dragEvt.clientX <= window.util.pinRange[0]) {
+          document.removeEventListener('drag', drag);
+          dragEvt.clientX = window.util.pinRange[0];
+        }
+      };
 
       document.addEventListener('mousemove', onMouseMove);
       document.addEventListener('mouseup', onMouseUp);
       document.addEventListener('dragover', drag);
     });
-
-    var map = window.pin.pinMap;
 
     map.addEventListener('dragover', function (evt) {
       evt.preventDefault();
