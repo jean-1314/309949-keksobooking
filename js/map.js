@@ -14,7 +14,7 @@
 
   (function () {
     var pinMain = document.querySelector('.pin__main');
-    var map = window.pin.pinMap;
+    var map = document.querySelector('.tokyo__pin-map');
 
     pinMain.addEventListener('mousedown', function (evt) {
       evt.preventDefault();
@@ -39,33 +39,39 @@
 
         pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
         pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
+
+        var addressInput = document.getElementById('address');
+        addressInput.value = 'x: ' + moveEvt.clientX + ', y: ' + moveEvt.clientY;
+
+        var posX = moveEvt.pageX;
+        var posY = moveEvt.pageY;
+        var pinRange = window.util.pinRange;
+
+        if (posX <= pinRange[0]) {
+          document.removeEventListener('mousemove', onMouseMove);
+          pinMain.style.left = pinRange[0] + 'px';
+        } else if (posX >= pinRange[1]) {
+          document.removeEventListener('mousemove', onMouseMove);
+          pinMain.style.left = pinRange[1] + 'px';
+        } else if (posY <= pinRange[2]) {
+          document.removeEventListener('mousemove', onMouseMove);
+          pinMain.style.top = pinRange[2] + 'px';
+        } else if (posY >= pinRange[3]) {
+          document.removeEventListener('mousemove', onMouseMove);
+          pinMain.style.top = pinRange[3] + 'px';
+        }
       };
 
       var onMouseUp = function (upEvt) {
-        var addressInput = document.getElementById('address');
+
         upEvt.preventDefault();
-        addressInput.value = 'x: ' + upEvt.clientX + ', y: ' + upEvt.clientY;
+
         document.removeEventListener('mousemove', onMouseMove);
         document.removeEventListener('mouseup', onMouseUp);
       };
 
-      var drag = function (dragEvt) {
-
-        dragEvt.preventDefault();
-        if (dragEvt.clientX <= window.util.pinRange[0]) {
-          document.removeEventListener('drag', drag);
-          dragEvt.clientX = window.util.pinRange[0];
-        }
-      };
-
       document.addEventListener('mousemove', onMouseMove);
       document.addEventListener('mouseup', onMouseUp);
-      document.addEventListener('dragover', drag);
-    });
-
-    map.addEventListener('dragover', function (evt) {
-      evt.preventDefault();
-      return false;
     });
   })();
 
