@@ -1,7 +1,7 @@
 'use strict';
 (function () {
 
-  var PIN_RANGE = [300, 900, 100, 500]; // [xMin, xMax, yMin, yMax]
+  var PIN_RANGE = [300, 900, 200, 600]; // [xMin, xMax, yMin, yMax]
   var PIN_SIZE = [56, 75]; // width = 40px; height = 40px;
 
   var ENTER_KEYCODE = 13;

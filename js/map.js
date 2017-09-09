@@ -14,18 +14,38 @@
 
   (function () {
     var pinMain = document.querySelector('.pin__main');
-    var map = document.querySelector('.tokyo__pin-map');
+    var pinMainWidth = pinMain.offsetWidth;
+    var pinMainHeight = pinMain.offsetHeight;
+
+    var pinPoint = {
+      x: Math.round(pinMainWidth / 2),
+      y: pinMainHeight
+    };
+
+    var map = document.querySelector('.tokyo');
+    var mapX = map.offsetLeft;
 
     pinMain.addEventListener('mousedown', function (evt) {
       evt.preventDefault();
 
       var startCoords = {
-        x: evt.clientX,
-        y: evt.clientY
+        x: evt.pageX,
+        y: evt.pageY
       };
 
       var onMouseMove = function (moveEvt) {
         moveEvt.preventDefault();
+
+        var pinMainRect = pinMain.getBoundingClientRect();
+
+        var pinPointLocation = {
+          x: Math.round(pinMainRect.left) - mapX + pinPoint.x,
+          y: pinMainRect.top + pinPoint.y
+        };
+
+        var addressInput = document.getElementById('address');
+        addressInput.value = 'x: ' + pinPointLocation.x + ', y: ' + pinPointLocation.y;
+        var pinRange = window.util.pinRange;
 
         var shift = {
           x: startCoords.x - moveEvt.clientX,
@@ -33,37 +53,29 @@
         };
 
         startCoords = {
-          x: moveEvt.clientX,
-          y: moveEvt.clientY
+          x: moveEvt.pageX,
+          y: moveEvt.pageY
         };
 
         pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
         pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
 
-        var addressInput = document.getElementById('address');
-        addressInput.value = 'x: ' + moveEvt.clientX + ', y: ' + moveEvt.clientY;
-
-        var posX = moveEvt.pageX;
-        var posY = moveEvt.pageY;
-        var pinRange = window.util.pinRange;
-
-        if (posX <= pinRange[0]) {
+        if (pinPointLocation.x < pinRange[0]) {
           document.removeEventListener('mousemove', onMouseMove);
-          pinMain.style.left = pinRange[0] + 'px';
-        } else if (posX >= pinRange[1]) {
+          pinMain.style.left = pinRange[0] - pinPoint.x + 'px';
+        } else if (pinPointLocation.x > pinRange[1]) {
           document.removeEventListener('mousemove', onMouseMove);
-          pinMain.style.left = pinRange[1] + 'px';
-        } else if (posY <= pinRange[2]) {
+          pinMain.style.left = pinRange[1] - pinPoint.x + 'px';
+        } else if (pinPointLocation.y < pinRange[2]) {
           document.removeEventListener('mousemove', onMouseMove);
-          pinMain.style.top = pinRange[2] + 'px';
-        } else if (posY >= pinRange[3]) {
+          pinMain.style.top = pinRange[2] - pinPoint.y + 'px';
+        } else if (pinPointLocation.y > pinRange[3]) {
           document.removeEventListener('mousemove', onMouseMove);
-          pinMain.style.top = pinRange[3] + 'px';
+          pinMain.style.top = pinRange[3] - pinPoint.y + 'px';
         }
       };
 
       var onMouseUp = function (upEvt) {
-
         upEvt.preventDefault();
 
         document.removeEventListener('mousemove', onMouseMove);

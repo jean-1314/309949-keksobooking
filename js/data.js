@@ -48,15 +48,15 @@
     window.util.shuffle(FEATURES);
     return FEATURES.slice(0, randFeaturesNumber);
   }
+  var pinX = window.util.pinSize[0] / 2;
+  var pinY = window.util.pinSize[1];
 
   function getLocationX() {
-    var pinX = window.util.pinSize[0] / 2;
-    return rand(pinRange[0], pinRange[1]) + pinX;
+    return rand(pinRange[0], pinRange[1]);
   }
 
   function getLocationY() {
-    var pinY = window.util.pinSize[1];
-    return rand(pinRange[2], pinRange[3]) + pinY;
+    return rand(pinRange[2], pinRange[3]);
   }
 
   function getRentAd(params) {
@@ -83,8 +83,8 @@
       },
 
       'location': {
-        'x': locationX,
-        'y': locationY
+        'x': locationX - pinX,
+        'y': locationY - pinY
       }
     };
   }
