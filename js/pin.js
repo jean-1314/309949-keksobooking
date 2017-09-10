@@ -70,6 +70,7 @@
   });
 
   window.pin = {
-    getCreatePin: createPin
+    getCreatePin: createPin,
+    pinMap: pinMap
   };
 })();
