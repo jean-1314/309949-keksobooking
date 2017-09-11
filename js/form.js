@@ -1,5 +1,14 @@
 'use strict';
 (function () {
+  var CHECKIN_TIME = ['12:00', '13:00', '14:00'];
+  var CHECKOUT_TIME = ['12:00', '13:00', '14:00'];
+
+  var NUMBER_OF_ROOMS = ['1', '2', '3', '100'];
+  var NUMBER_OF_GUESTS = ['1', '2', '3', '0'];
+
+  var APARTMENT_TYPES = ['flat', 'bungalo', 'house', 'palace'];
+  var MIN_PRICES = [1000, 0, 5000, 10000];
+
   var noticeForm = document.forms.notice;
 
   var timeInInput = document.getElementById('timein');
@@ -15,10 +24,6 @@
 
   var submitBtn = document.querySelector('.form__submit');
 
-  function getCapacity() {
-    return window.util.getRoomsCapacity;
-  }
-
   function addInvalidBorder() {
     for (var i = 0; i < noticeInputs.length; i++) {
       if (!noticeInputs[i].validity.valid) {
@@ -27,26 +32,21 @@
     }
   }
 
-  timeInInput.addEventListener('change', function () {
-    timeOutInput.value = timeInInput.value;
-  });
+  var syncValues = function (element, value) {
+    element.value = value;
+  };
 
-  timeOutInput.addEventListener('change', function () {
-    timeInInput.value = timeOutInput.value;
-  });
+  var syncValueWithMin = function (element, value) {
+    element.min = value;
+  };
 
-  typeInput.addEventListener('change', function () {
-    priceInput.min = window.util.getLodgeTypePrices[typeInput.value].min || 0;
-    priceInput.value = window.util.getLodgeTypePrices[typeInput.value].value || 0;
-  });
+  window.synchronizeFields(timeInInput, timeOutInput, CHECKIN_TIME, CHECKOUT_TIME, syncValues);
+  window.synchronizeFields(timeOutInput, timeInInput, CHECKOUT_TIME, CHECKIN_TIME, syncValues);
 
-  roomInput.addEventListener('change', function () {
-    capacityInput.value = getCapacity()[roomInput.value] || 0;
-  });
+  window.synchronizeFields(roomInput, capacityInput, NUMBER_OF_ROOMS, NUMBER_OF_GUESTS, syncValues);
+  window.synchronizeFields(capacityInput, roomInput, NUMBER_OF_GUESTS, NUMBER_OF_ROOMS, syncValues);
 
-  capacityInput.addEventListener('change', function () {
-    roomInput.value = getCapacity()[capacityInput.value] || 0;
-  });
+  window.synchronizeFields(typeInput, priceInput, APARTMENT_TYPES, MIN_PRICES, syncValueWithMin);
 
   submitBtn.addEventListener('click', function () {
     addInvalidBorder();
