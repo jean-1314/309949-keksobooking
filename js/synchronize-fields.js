@@ -1,11 +1,12 @@
 'use strict';
-(function () {
 
-  // var syncValues = function (element, value) {
-  //   element.value = value;
-  // };
+window.synchronizeFields = (function () {
 
-  // window.synchronizeFields = function (element, value) {
-  //   element.value = value;
-  // };
+  return function (firstInput, secondInput, firstInputValues, secondInputValues, syncValues) {
+    firstInput.addEventListener('change', function () {
+      var secondInputValue = secondInputValues[firstInputValues.indexOf(firstInput.value)];
+      syncValues(secondInput, secondInputValue);
+    });
+  };
+
 })();
