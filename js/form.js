@@ -27,13 +27,24 @@
     }
   }
 
-  timeInInput.addEventListener('change', function () {
-    timeOutInput.value = timeInInput.value;
-  });
+  var syncValues = function (element, value) {
+    element.value = value;
+  };
 
-  timeOutInput.addEventListener('change', function () {
+  function setTimeIn() {
+    timeOutInput.value = timeInInput.value;
+  }
+
+  function setTimeOut() {
     timeInInput.value = timeOutInput.value;
-  });
+  }
+
+  timeInInput.addEventListener('change', syncValues(setTimeIn, setTimeOut));
+
+  timeOutInput.addEventListener('change', setTimeOut);
+  // timeOutInput.addEventListener('change', function () {
+  //   timeInInput.value = timeOutInput.value;
+  // });
 
   typeInput.addEventListener('change', function () {
     priceInput.min = window.util.getLodgeTypePrices[typeInput.value].min || 0;
