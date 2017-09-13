@@ -58,6 +58,11 @@
     }
   });
 
+  noticeForm.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(noticeForm), true, window.map.errorHandler);
+    evt.preventDefault();
+  });
+
   (function init() {
     capacityInput.value = '1';
     priceInput.value = 1000;
