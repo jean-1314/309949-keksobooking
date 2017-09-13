@@ -75,7 +75,7 @@
   }
 
   noticeForm.addEventListener('submit', function (evt) {
-    window.backend.save(new FormData(noticeForm), successHandler(evt), window.map.errorHandler);
+    window.backend.save(new FormData(noticeForm), successHandler(), window.map.errorHandler);
     evt.preventDefault();
   });
 
