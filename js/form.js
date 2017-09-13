@@ -58,8 +58,24 @@
     }
   });
 
+  function successHandler(evt) {
+    evt.preventDefault();
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: green;';
+    node.style.position = 'absolute';
+    node.style.width = '50%';
+    node.style.top = '55%';
+    node.style.left = '50%';
+    node.style.transform = 'translateX(-50%)';
+    node.style.fontSize = '30px';
+
+    node.textContent = 'Ваше объявление успешно размещено!';
+    document.body.insertAdjacentElement('afterbegin', node);
+    noticeForm.reset();
+  }
+
   noticeForm.addEventListener('submit', function (evt) {
-    window.backend.save(new FormData(noticeForm), true, window.map.errorHandler);
+    window.backend.save(new FormData(noticeForm), successHandler(evt), window.map.errorHandler);
     evt.preventDefault();
   });
 
