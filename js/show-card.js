@@ -4,7 +4,7 @@
     pin.addEventListener('click', function (relatedPinData) {
       if (this.classList.contains('pin--active')) {
         deactivatePin(this);
-        window.data.getCloseDialog();
+        window.map.closeDialog();
       } else {
         activatePin(this);
         window.map.getOpenDialog(relatedPinData);
@@ -19,13 +19,13 @@
     }.bind(pin, data));
 
     window.util.getDialogOff.addEventListener('click', function () {
-      window.data.getCloseDialog();
+      window.map.closeDialog();
       deactivatePin(this);
     }.bind(pin));
 
     window.util.getDialogOff.addEventListener('keydown', function (evt) {
       if (evt.keyCode === window.util.enter) {
-        window.data.getCloseDialog();
+        window.map.closeDialog();
         deactivatePin(this);
       }
     }.bind(pin));
@@ -46,7 +46,7 @@
 
   document.addEventListener('keydown', function (evt) {
     if (evt.keyCode === window.util.esc) {
-      window.data.getCloseDialog();
+      window.map.closeDialog();
       deactivatePin(evt.target);
     }
   });
