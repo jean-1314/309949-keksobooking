@@ -4,12 +4,17 @@
   var addressInput = document.getElementById('address');
   var MAIN_PIN_RANGE = [0, 1200, 170, 660];
 
+  function closeDialog() {
+    window.util.getDialog.style.display = 'none';
+  }
+
   function init() {
+    closeDialog();
     window.backend.load(successHandler, errorHandler);
   }
 
-  function successHandler() {
-    window.data.getRentAds.forEach(window.pin.getCreatePin);
+  function successHandler(data) {
+    data.forEach(window.pin.getCreatePin);
   }
 
   function errorHandler(errorMessage) {
@@ -100,6 +105,8 @@
   })();
 
   window.map = {
-    getOpenDialog: openDialog
+    getOpenDialog: openDialog,
+    closeDialog: closeDialog,
+    errorHandler: errorHandler
   };
 })();
