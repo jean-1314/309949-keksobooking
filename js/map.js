@@ -5,7 +5,23 @@
   var MAIN_PIN_RANGE = [0, 1200, 170, 660];
 
   function init() {
+    window.backend.load(successHandler, errorHandler);
+  }
+
+  function successHandler() {
     window.data.getRentAds.forEach(window.pin.getCreatePin);
+  }
+
+  function errorHandler(errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
   }
 
   function openDialog(pinData) {
