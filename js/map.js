@@ -1,20 +1,23 @@
 'use strict';
+
 (function () {
+  var MAIN_PIN_RANGE = [0, 1200, 170, 660];
 
   var addressInput = document.getElementById('address');
-  var MAIN_PIN_RANGE = [0, 1200, 170, 660];
+  var dataCached = null;
+  var pinsCached = null;
 
   function closeDialog() {
     window.util.getDialog.style.display = 'none';
   }
 
-  function init() {
-    closeDialog();
-    window.backend.load(successHandler, errorHandler);
+  function createPinsByData(data) {
+    pinsCached = data.map(window.pin.getCreatePin);
   }
 
-  function successHandler(data) {
-    data.forEach(window.pin.getCreatePin);
+  function loadEndHandler(data) {
+    dataCached = data;
+    createPinsByData(dataCached);
   }
 
   function errorHandler(errorMessage) {
@@ -34,7 +37,11 @@
     window.card.getCreateDialog(pinData);
   }
 
-  init();
+  (function init() {
+    closeDialog();
+    window.backend.load(loadEndHandler, errorHandler);
+    window.pin.setFilters();
+  })();
 
   (function () {
     var pinMain = document.querySelector('.pin__main');
@@ -104,9 +111,19 @@
     });
   })();
 
+  function getDataCached() {
+    return dataCached;
+  }
+
+  function getPinsCached() {
+    return pinsCached;
+  }
+
   window.map = {
     getOpenDialog: openDialog,
     closeDialog: closeDialog,
-    errorHandler: errorHandler
+    errorHandler: errorHandler,
+    getDataCached: getDataCached,
+    getPinsCached: getPinsCached
   };
 })();

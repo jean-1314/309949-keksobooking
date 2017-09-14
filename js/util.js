@@ -22,6 +22,9 @@
     '0': '100'
   };
 
+  var DEBOUNCE_INTERVAL = 500;
+
+  var lastTimeout;
   var dialog = document.getElementById('offer-dialog');
   var dialogOff = document.querySelector('.dialog__close');
 
@@ -42,7 +45,15 @@
     }
   }
 
+  function debounce(fun) {
+    if (lastTimeout) {
+      window.clearTimeout(lastTimeout);
+    }
+    lastTimeout = window.setTimeout(fun, DEBOUNCE_INTERVAL);
+  }
+
   window.util = {
+    debounce: debounce,
 
     pinRange: PIN_RANGE,
 
