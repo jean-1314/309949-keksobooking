@@ -4,21 +4,20 @@
   var MAIN_PIN_RANGE = [0, 1200, 170, 660];
 
   var addressInput = document.getElementById('address');
-  var type = document.getElementById('housing_type');
-  var price = document.getElementById('housing_price');
-  var roomNumber = document.getElementById('housing_room-number');
-  var guestsNumber = document.getElementById('housing_guests-number');
-  var features = document.getElementById('housing_features');
+  var dataCached = null;
+  var pinsCached = null;
 
   function closeDialog() {
     window.util.getDialog.style.display = 'none';
   }
 
-  function successHandler(data) {
-    data.filter(function () {
+  function createPinsByData(data) {
+    pinsCached = data.map(window.pin.getCreatePin);
+  }
 
-    });
-    data.forEach(window.pin.getCreatePin);
+  function loadEndHandler(data) {
+    dataCached = data;
+    createPinsByData(dataCached);
   }
 
   function errorHandler(errorMessage) {
@@ -40,7 +39,8 @@
 
   (function init() {
     closeDialog();
-    window.backend.load(successHandler, errorHandler);
+    window.backend.load(loadEndHandler, errorHandler);
+    window.pin.setFilters();
   })();
 
   (function () {
@@ -111,9 +111,19 @@
     });
   })();
 
+  function getDataCached() {
+    return dataCached;
+  }
+
+  function getPinsCached() {
+    return pinsCached;
+  }
+
   window.map = {
     getOpenDialog: openDialog,
     closeDialog: closeDialog,
-    errorHandler: errorHandler
+    errorHandler: errorHandler,
+    getDataCached: getDataCached,
+    getPinsCached: getPinsCached
   };
 })();
