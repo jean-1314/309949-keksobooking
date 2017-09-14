@@ -1,19 +1,23 @@
 'use strict';
+
 (function () {
+  var MAIN_PIN_RANGE = [0, 1200, 170, 660];
 
   var addressInput = document.getElementById('address');
-  var MAIN_PIN_RANGE = [0, 1200, 170, 660];
+  var type = document.getElementById('housing_type');
+  var price = document.getElementById('housing_price');
+  var roomNumber = document.getElementById('housing_room-number');
+  var guestsNumber = document.getElementById('housing_guests-number');
+  var features = document.getElementById('housing_features');
 
   function closeDialog() {
     window.util.getDialog.style.display = 'none';
   }
 
-  function init() {
-    closeDialog();
-    window.backend.load(successHandler, errorHandler);
-  }
-
   function successHandler(data) {
+    data.filter(function () {
+
+    });
     data.forEach(window.pin.getCreatePin);
   }
 
@@ -34,7 +38,10 @@
     window.card.getCreateDialog(pinData);
   }
 
-  init();
+  (function init() {
+    closeDialog();
+    window.backend.load(successHandler, errorHandler);
+  })();
 
   (function () {
     var pinMain = document.querySelector('.pin__main');
