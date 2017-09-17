@@ -15,8 +15,8 @@
 
   function typeHandler(offersList, pinsList) {
     if (['flat', 'house', 'bungalo'].includes(filters.housingType.value)) {
-      offersList.forEach(function (it, i) {
-        if (it.offer.type !== filters.housingType.value) {
+      offersList.forEach(function (item, i) {
+        if (item.offer.type !== filters.housingType.value) {
           pinsList[i].style.display = 'none';
         }
       });
@@ -26,22 +26,22 @@
   function priceHandler(offersList, pinsList) {
     switch (filters.housingPrice.value) {
       case 'low':
-        offersList.forEach(function (it, i) {
-          if (it.offer.price >= 10000) {
+        offersList.forEach(function (item, i) {
+          if (item.offer.price >= 10000) {
             pinsList[i].style.display = 'none';
           }
         });
         break;
       case 'middle':
-        offersList.forEach(function (it, i) {
-          if (it.offer.price < 10000 || it.offer.price > 50000) {
+        offersList.forEach(function (item, i) {
+          if (item.offer.price < 10000 || item.offer.price > 50000) {
             pinsList[i].style.display = 'none';
           }
         });
         break;
       case 'high':
-        offersList.forEach(function (it, i) {
-          if (it.offer.price <= 50000) {
+        offersList.forEach(function (item, i) {
+          if (item.offer.price <= 50000) {
             pinsList[i].style.display = 'none';
           }
         });
@@ -54,8 +54,8 @@
       case '1':
       case '2':
       case '3':
-        offersList.forEach(function (it, i) {
-          if (it.offer.rooms !== +filters.housingRoomNumber.value) {
+        offersList.forEach(function (item, i) {
+          if (item.offer.rooms !== +filters.housingRoomNumber.value) {
             pinsList[i].style.display = 'none';
           }
         });
@@ -67,8 +67,8 @@
     switch (filters.housingGuestsNumber.value) {
       case '1':
       case '2':
-        offersList.forEach(function (it, i) {
-          if (it.offer.guests !== +filters.housingGuestsNumber.value) {
+        offersList.forEach(function (item, i) {
+          if (item.offer.guests !== +filters.housingGuestsNumber.value) {
             pinsList[i].style.display = 'none';
           }
         });
@@ -78,14 +78,14 @@
 
   function featuresHandler(offersList, pinsList) {
     var featuresFilters = [];
-    filtersGroup.forEach(function (it) {
-      if (it.checked) {
-        featuresFilters.push(it.value);
+    filtersGroup.forEach(function (item) {
+      if (item.checked) {
+        featuresFilters.push(item.value);
       }
     });
-    offersList.forEach(function (it, i) {
+    offersList.forEach(function (item, i) {
       featuresFilters.forEach(function (filter) {
-        if (it.offer.features.indexOf(filter) === -1) {
+        if (item.offer.features.indexOf(filter) === -1) {
           pinsList[i].style.display = 'none';
         }
       });

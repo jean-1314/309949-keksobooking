@@ -33,15 +33,14 @@
     return Math.floor(min + Math.random() * multiplier);
   }
 
-  function shuffle(a) {
-    var j;
-    var x;
-    var i;
-    for (i = a.length; i; i--) {
-      j = Math.floor(Math.random() * i);
-      x = a[i - 1];
-      a[i - 1] = a[j];
-      a[j] = x;
+  function shuffle(array) {
+    var randomNum;
+    var newArray;
+    for (var i = array.length; i; i--) {
+      randomNum = Math.floor(Math.random() * i);
+      newArray = array[i - 1];
+      array[i - 1] = array[randomNum];
+      array[randomNum] = newArray;
     }
   }
 
