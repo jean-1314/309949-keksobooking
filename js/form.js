@@ -7,7 +7,7 @@
   var NUMBER_OF_GUESTS = ['1', '2', '3', '0'];
 
   var APARTMENT_TYPES = ['flat', 'bungalo', 'house', 'palace'];
-  var MIN_PRICES = [1000, 0, 5000, 10000];
+  var MIN_PRICES = [1000, 0, 10000, 10000];
 
   var noticeForm = document.forms.notice;
 
@@ -58,8 +58,7 @@
     }
   });
 
-  function successHandler(evt) {
-    evt.preventDefault();
+  function successHandler() {
     var node = document.createElement('div');
     node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: green;';
     node.style.position = 'absolute';
@@ -75,8 +74,8 @@
   }
 
   noticeForm.addEventListener('submit', function (evt) {
-    window.backend.save(new FormData(noticeForm), successHandler(), window.map.errorHandler);
     evt.preventDefault();
+    window.backend.save(new FormData(noticeForm), successHandler, window.map.errorHandler);
   });
 
   (function init() {
