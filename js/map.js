@@ -37,13 +37,7 @@
     window.card.getCreateDialog(pinData);
   }
 
-  (function init() {
-    closeDialog();
-    window.backend.load(loadEndHandler, errorHandler);
-    window.pin.setFilters();
-  })();
-
-  (function () {
+  function pinHandler() {
     var pinMain = document.querySelector('.pin__main');
     var pinMainWidth = pinMain.offsetWidth;
     var pinMainHeight = pinMain.offsetHeight;
@@ -80,18 +74,14 @@
         };
 
         if (newLocation.x < MAIN_PIN_RANGE[0]) {
-          document.removeEventListener('mousemove', onMouseMove);
           newLocation.x = MAIN_PIN_RANGE[0];
         } else if (newLocation.x > MAIN_PIN_RANGE[1]) {
-          document.removeEventListener('mousemove', onMouseMove);
           newLocation.x = MAIN_PIN_RANGE[1];
         }
 
         if (newLocation.y < MAIN_PIN_RANGE[2]) {
-          document.removeEventListener('mousemove', onMouseMove);
           newLocation.y = MAIN_PIN_RANGE[2];
         } else if (newLocation.y > MAIN_PIN_RANGE[3]) {
-          document.removeEventListener('mousemove', onMouseMove);
           newLocation.y = MAIN_PIN_RANGE[3];
         }
 
@@ -109,6 +99,13 @@
       document.addEventListener('mousemove', onMouseMove);
       document.addEventListener('mouseup', onMouseUp);
     });
+  }
+
+  (function init() {
+    closeDialog();
+    window.backend.load(loadEndHandler, errorHandler);
+    window.pin.setFilters();
+    pinHandler();
   })();
 
   function getDataCached() {
