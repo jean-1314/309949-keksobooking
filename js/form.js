@@ -22,6 +22,8 @@
   var roomInput = document.getElementById('room_number');
   var capacityInput = document.getElementById('capacity');
 
+  var addressInput = document.getElementById('address');
+
   var submitBtn = document.querySelector('.form__submit');
 
   function addInvalidBorder() {
@@ -81,5 +83,6 @@
   (function init() {
     capacityInput.value = '1';
     priceInput.value = 1000;
+    addressInput.value = 'x: 638, y: 394';
   })();
 })();
