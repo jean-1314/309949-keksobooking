@@ -4,6 +4,24 @@
   function createDialog(data) {
     var template = document.getElementById('lodge-template').cloneNode(true);
 
+    var type = template.content.querySelector('.lodge__type');
+    switch (data.offer.type) {
+      case 'bungalo':
+        type.textContent = 'Лачуга';
+        break;
+      case 'flat':
+        type.textContent = 'Квартира';
+        break;
+      case 'house':
+        type.textContent = 'Дом';
+        break;
+      case 'palace':
+        type.textContent = 'Дворец';
+        break;
+      default:
+        type.textContent = 'Неопознанный тип жилья';
+    }
+
     template.content.querySelector('.lodge__title').textContent = data.offer.title;
     template.content.querySelector('.lodge__address').textContent = data.offer.address;
     template.content.querySelector('.lodge__price').innerHTML = data.offer.price + ' &#x20bd;/ночь';
